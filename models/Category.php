@@ -7,9 +7,9 @@ class Category
     private $table = 'categories';
 
     // Properties
-    private $id;
-    private $title;
-    private $createdAt;
+    public  $id;
+    public  $title;
+    public  $createdAt;
 
     //Constructor With DB
     public function __construct($db)
@@ -21,7 +21,7 @@ class Category
     public function read()
     {
         //query
-        $query = 'SELECT * FROM categories;';
+        $query = 'SELECT * FROM ' . $this->table . ';';
 
         //Prepare Statement
         $stmt = $this->conn->prepare($query);
@@ -30,5 +30,28 @@ class Category
         $stmt->execute();
 
         return $stmt;
+    }
+
+    public function read_single()
+    {
+        //query
+        $query = "SELECT * FROM  " . $this->table . "  WHERE id = :id LIMIT 1 ";
+
+        //Prepare Statement
+        $stmt = $this->conn->prepare($query);
+
+        //Bin ID
+        $stmt->bindParam(':id', $this->id);
+
+        //Execute Query
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        extract($row);
+
+        $this->id = $id;
+        $this->title = $title;
+        $this->createdAt = $createdAt;
     }
 }
