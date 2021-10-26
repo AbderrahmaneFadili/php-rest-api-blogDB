@@ -25,7 +25,7 @@ class Post
     {
         //Create Query
         $query = 'SELECT p.id,c.title 
-                  AS category_title,p.title,p.body,p.author,p.createdAt
+                  AS category_title,c.id AS category_id,p.title,p.body,p.author,p.createdAt
                   FROM ' . $this->table . ' p INNER JOIN categories c 
                   ON p.category_Id = c.id ORDER BY p.id DESC';
 
