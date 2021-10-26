@@ -76,4 +76,29 @@ class Category
         }
         return false;
     }
+
+    public function update()
+    {
+        //Query
+        $query = "UPDATE " . $this->table . " SET title = :title , createdAt = :createdAt WHERE id = :id";
+
+        //Prepare Statement
+        $stmt = $this->conn->prepare($query);
+
+        //Clean Data
+        $this->id =  htmlspecialchars(strip_tags($this->id));
+        $this->title = htmlspecialchars(strip_tags($this->title));
+        $this->createdAt = htmlspecialchars(strip_tags($this->createdAt));
+
+        //Bind Data
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(":title", $this->title);
+        $stmt->bindParam(":createdAt", $this->createdAt);
+
+        //Execute query
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
 }
