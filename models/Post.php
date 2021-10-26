@@ -131,4 +131,26 @@ class Post
         }
         return false;
     }
+
+    //delete post
+    public function delete()
+    {
+        //Create Query
+        $query = " DELETE FROM " . $this->table . " WHERE id = :id";
+
+        //prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        //Clear data
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        //Bind Data
+        $stmt->bindParam(":id", $this->id);
+
+        //Execute Query
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
 }
