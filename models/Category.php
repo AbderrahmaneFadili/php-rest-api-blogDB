@@ -54,4 +54,26 @@ class Category
         $this->title = $title;
         $this->createdAt = $createdAt;
     }
+
+    public function create()
+    {
+        //Query
+        $query = "INSERT INTO " . $this->table . " (title,createdAt) VALUES (:title,:createdAt)";
+
+        //Prepare Statement
+        $stmt = $this->conn->prepare($query);
+
+        //Clean Data
+        $this->title = htmlspecialchars(strip_tags($this->title));
+
+        //Bind Data
+        $stmt->bindParam(":title", $this->title);
+        $stmt->bindParam(":createdAt", $this->createdAt);
+
+        //Execute query
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
 }
