@@ -42,13 +42,15 @@ class Post
     public function read_single()
     {
         //Create single
-        $query = "SELECT p.id,c.title AS category_title,c.id AS category_id,p.title,p.body,p.author,p.createdAt FROM   posts  p INNER JOIN categories c  ON p.category_Id = c.id  WHERE p.id = ? ORDER BY p.id DESC  LIMIT 1";
+        $query = "SELECT p.id,c.title AS category_title,c.id AS category_id,p.title,p.body,
+                  p.author,p.createdAt FROM  posts  p INNER JOIN categories c  
+                  ON p.category_Id = c.id  WHERE p.id = :id ORDER BY p.id DESC  LIMIT 1";
 
         // Prepare Statement
         $stmt = $this->conn->prepare($query);
 
         // Bind id
-        $stmt->bindParam(1, $this->id);
+        $stmt->bindParam(":id", $this->id);
 
         // Execute Query
         $stmt->execute();
@@ -66,8 +68,6 @@ class Post
         $this->category_id = $category_id;
         $this->category_title = $category_title;
         $this->createdAt = $createdAt;
-
-        return count($row);
     }
 
     //create a single post
@@ -75,7 +75,7 @@ class Post
     {
         //Create Query
         $query =
-            "INSERT INTO  " . $this->table . "  (title,body,author,category_id createdAt)  VALUES  (:title,:body,:author,:category_id,:createdAt)
+            "INSERT INTO  " . $this->table . "(title,body,author,category_id createdAt)  VALUES  (:title,:body,:author,:category_id,:createdAt)
           ";
 
         $stmt = $this->conn->prepare($query);
@@ -136,7 +136,7 @@ class Post
     public function delete()
     {
         //Create Query
-        $query = " DELETE FROM " . $this->table . " WHERE id = :id";
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
 
         //prepare statement
         $stmt = $this->conn->prepare($query);

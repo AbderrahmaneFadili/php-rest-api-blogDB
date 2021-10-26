@@ -14,7 +14,7 @@ $db = $database->connect();
 // Instantiate blog post object
 $post = new Post($db);
 
-// Blog post query
+// Blog posts query
 $result =  $post->read();
 
 //Row Count
@@ -22,7 +22,8 @@ $num = $result->rowCount();
 
 //Check if any posts
 if ($num > 0) {
-    //Post array
+
+    //Posts array
     $posts_arr = array();
 
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -42,7 +43,7 @@ if ($num > 0) {
         array_push($posts_arr, $post_item);
     }
 
-    //Turn to JSON & output
+    //push to posts_arr
     echo json_encode($posts_arr);
 } else {
     //No Posts
