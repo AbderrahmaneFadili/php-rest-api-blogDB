@@ -75,10 +75,7 @@ class Post
     {
         //Create Query
         $query =
-            "INSERT INTO 
-            " . $this->table . "
-             (title,body,author,category_Id,createdAt) 
-             VALUES  (:title,:body,:author,:category_id,:createdAt);
+            "INSERT INTO  " . $this->table . "  (title,body,author,category_id createdAt)  VALUES  (:title,:body,:author,:category_id,:createdAt)
           ";
 
         $stmt = $this->conn->prepare($query);
@@ -96,6 +93,38 @@ class Post
         $stmt->bindParam(':author', $this->author);
         $stmt->bindParam(':category_id', $this->category_id);
         $stmt->bindParam(':createdAt', $this->createdAt);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    //Update post
+    public function update()
+    {
+        //Create Query
+        $query = 'UPDATE ' . $this->table . ' SET  title = :title , body = :body ,   author = :author , category_id = :category_id , createdAt = :createdAt WHERE 
+        id = :id
+        ';
+
+        $stmt = $this->conn->prepare($query);
+
+        //Clean Data
+        $this->title = htmlspecialchars(strip_tags($this->title));
+        $this->body = htmlspecialchars(strip_tags($this->body));
+        $this->author = htmlspecialchars(strip_tags($this->author));
+        $this->category_id = htmlspecialchars(strip_tags($this->category_id));
+        $this->createdAt = htmlspecialchars(strip_tags($this->createdAt));
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        //Bind Data
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':body', $this->body);
+        $stmt->bindParam(':author', $this->author);
+        $stmt->bindParam(':category_id', $this->category_id);
+        $stmt->bindParam(':createdAt', $this->createdAt);
+        $stmt->bindParam(':id', $this->id);
 
         if ($stmt->execute()) {
             return true;
