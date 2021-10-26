@@ -101,4 +101,25 @@ class Category
         }
         return false;
     }
+
+    public function delete()
+    {
+        //Query
+        $query = " DELETE FROM " . $this->table . " WHERE id = :id; ";
+
+        //Prepare Statement
+        $stmt = $this->conn->prepare($query);
+
+        //Clean Data
+        $this->id =  htmlspecialchars(strip_tags($this->id));
+
+        //Bind Data
+        $stmt->bindParam(':id', $this->id);
+
+        //Execute query
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
 }
