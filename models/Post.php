@@ -43,7 +43,7 @@ class Post
     {
         //Create single
         $query = "SELECT p.id,c.title AS category_title,c.id AS category_id,p.title,p.body,
-                  p.author,p.createdAt FROM  posts  p INNER JOIN categories c  
+                  p.author,p.createdAt FROM  " . $this->table . "  p INNER JOIN categories c  
                   ON p.category_Id = c.id  WHERE p.id = :id ORDER BY p.id DESC  LIMIT 1";
 
         // Prepare Statement
@@ -75,7 +75,7 @@ class Post
     {
         //Create Query
         $query =
-            "INSERT INTO  " . $this->table . "(title,body,author,category_id createdAt)  VALUES  (:title,:body,:author,:category_id,:createdAt)
+            "INSERT INTO  " . $this->table . "(title,body,author,category_id ,createdAt)  VALUES  (:title,:body,:author,:category_id,:createdAt)
           ";
 
         $stmt = $this->conn->prepare($query);
